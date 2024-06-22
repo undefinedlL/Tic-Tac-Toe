@@ -1,10 +1,10 @@
-const startGameButton = document.getElementById('startGame');
-const resetButton = document.getElementById('resetButton');
-const finalWindow = document.getElementById('final');
-const finalText = document.getElementById('finalText');
-const startWindow = document.querySelector('.start-page');
-const cells = document.querySelectorAll('.cell');
-const turnInfo = document.getElementById('turn');
+const startGameButton = document.getElementById("startGame");
+const resetButton = document.getElementById("resetButton");
+const finalWindow = document.getElementById("final");
+const finalText = document.getElementById("finalText");
+const startWindow = document.querySelector(".start-page");
+const cells = document.querySelectorAll(".cell");
+const turnInfo = document.getElementById("turn");
 const winningCombinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -13,22 +13,23 @@ const winningCombinations = [
     [6, 4, 2],
     [0, 3, 6],
     [1, 4, 7],
-    [2, 5, 8]
+    [2, 5, 8],
 ];
 let isCrossTurn = true;
 let isWinner = false;
 
-startGameButton.addEventListener('click', startButtonClickHandler);
-resetButton.addEventListener('click', resetButtonClickHandler);
+startGameButton.addEventListener("click", startButtonClickHandler);
+resetButton.addEventListener("click", resetButtonClickHandler);
 
-function startGame()  {
+function startGame() {
     changeGameTurnStatus();
     cells.forEach((cell) => {
-        cell.addEventListener('click', clickCell, { once: true })});
+        cell.addEventListener("click", clickCell, { once: true });
+    });
 }
 
 function resetGame() {
-    console.log('reset game');
+    console.log("reset game");
     isWinner = false;
     clearCells();
     removeHighlightCells();
@@ -38,17 +39,17 @@ function resetGame() {
 
 function endGame() {
     cells.forEach((cell) => {
-        cell.removeEventListener('click', clickCell)});
+        cell.removeEventListener("click", clickCell);
+    });
     showFinalWindow();
 }
-
 
 function changeTurn() {
     isCrossTurn = !isCrossTurn;
 }
 
 function getTurn() {
-    return isCrossTurn ? 'cross' : 'circle';
+    return isCrossTurn ? "cross" : "circle";
 }
 
 function changeGameTurnStatus() {
@@ -56,8 +57,8 @@ function changeGameTurnStatus() {
 }
 
 function addMark() {
-    let mark = document.createElement('div');   
-    let currentTurn = isCrossTurn ? 'cross' : 'circle'
+    let mark = document.createElement("div");
+    let currentTurn = isCrossTurn ? "cross" : "circle";
     mark.classList.add(currentTurn);
     return mark;
 }
@@ -71,7 +72,6 @@ function clickCell(e) {
     }
     changeTurn();
     changeGameTurnStatus();
-    
 }
 
 function isWinningCombinations() {
@@ -79,42 +79,45 @@ function isWinningCombinations() {
     for (combination of winningCombinations) {
         const [x, y, z] = combination;
         if (
-            cells[x].firstChild?.classList.contains(currentTurn) && 
-            cells[y].firstChild?.classList.contains(currentTurn) && 
+            cells[x].firstChild?.classList.contains(currentTurn) &&
+            cells[y].firstChild?.classList.contains(currentTurn) &&
             cells[z].firstChild?.classList.contains(currentTurn)
         ) {
             console.log("WINNER");
             isWinner = true;
             highlightCells(x, y, z);
             return true;
-        } 
+        }
     }
     return false;
 }
 
 function highlightCells(c1, c2, c3) {
-    cells[c1].classList.add('win');
-    cells[c2].classList.add('win');
-    cells[c3].classList.add('win');
+    cells[c1].classList.add("win");
+    cells[c2].classList.add("win");
+    cells[c3].classList.add("win");
 }
 
 function removeHighlightCells() {
-    cells.forEach(cell => {
-        if (cell.classList.contains('win')) {
-            cell.classList.remove('win');
+    cells.forEach((cell) => {
+        if (cell.classList.contains("win")) {
+            cell.classList.remove("win");
         }
-    })
+    });
 }
 
 function isDraw() {
-    if ([...cells].every(cell => cell.children.length == 1) && !isWinningCombinations()) {
+    if (
+        [...cells].every((cell) => cell.children.length == 1) &&
+        !isWinningCombinations()
+    ) {
         return true;
     }
     return false;
 }
 
 function startButtonClickHandler(e) {
-    const startWindow = document.querySelector('.start-page');
+    const startWindow = document.querySelector(".start-page");
     startWindow.remove();
     startGame();
 }
@@ -125,7 +128,7 @@ function resetButtonClickHandler(e) {
 }
 
 function clearCells() {
-    cells.forEach(cell => {
+    cells.forEach((cell) => {
         if (cell.firstChild) {
             cell.removeChild(cell.firstChild);
         }
@@ -133,18 +136,18 @@ function clearCells() {
 }
 
 function showFinalWindow() {
-    isWinner ?
-        finalText.innerHTML = `The winner is ${getTurn()}` :
-        finalText.innerHTML = `Draw`;
-    finalWindow.style.display = 'flex';
+    isWinner
+        ? (finalText.innerHTML = `The winner is ${getTurn()}`)
+        : (finalText.innerHTML = `Draw`);
+    finalWindow.style.display = "flex";
     setTimeout(() => {
-        finalWindow.classList.add('active');
+        finalWindow.classList.add("active");
     }, 300);
 }
 
 function hideFinalWindow() {
-    finalWindow.classList.remove('active');
+    finalWindow.classList.remove("active");
     setTimeout(() => {
-        finalWindow.style.display = 'none';
-    }, 100)
+        finalWindow.style.display = "none";
+    }, 100);
 }
