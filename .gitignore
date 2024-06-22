@@ -1,1 +1,4 @@
 node_modules
+/assets/styles/styles.scss
+package.json
+package-lock.json
